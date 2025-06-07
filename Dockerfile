@@ -1,14 +1,12 @@
-# Usa una imagen base de OpenJDK
-FROM eclipse-temurin:17-jdk-alpine
-
-# Carpeta dentro del contenedor donde estará la app
+# Etapa 1: Build
+FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copia el archivo JAR generado (cambia el nombre si es otro)
-COPY target/Laboratorio-12-SpringBoot-thymeleaf-0.0.1-SNAPSHOT.jar app.jar
-
-# Expone el puerto que usa Spring Boot (por defecto 8080)
+# Etapa 2: Runtime
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/target/Laboratorio-12-SpringBoot-thymeleaf-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-
-# Comando para ejecutar la app
 ENTRYPOINT ["java","-jar","/app/app.jar"]
