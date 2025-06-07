@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}">Editar Estudiante</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Header compartido -->
+<header th:replace="fragments/header :: header"></header>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center" th:text="${titulo}">Editar Estudiante</h2>
+
+    <form th:action="@{/estudiante/editar}" th:object="${estudiante}" method="post"
+          class="card shadow-sm p-4 mx-auto" style="max-width: 500px;">
+
+        <!-- Campo oculto para el ID (importante al editar) -->
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="mb-3">
+            <label for="nombres" class="form-label">Nombres</label>
+            <input type="text" th:field="*{nombres}" class="form-control" id="nombres" placeholder="Juan" required>
+            <div class="text-danger small" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="apellidos" class="form-label">Apellidos</label>
+            <input type="text" th:field="*{apellidos}" class="form-control" id="apellidos" placeholder="Pérez" required>
+            <div class="text-danger small" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="edad" class="form-label">Edad</label>
+            <input type="number" th:field="*{edad}" class="form-control" id="edad" min="0" required>
+            <div class="text-danger small" th:if="${#fields.hasErrors('edad')}" th:errors="*{edad}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="sexo" class="form-label">Sexo</label>
+            <select th:field="*{sexo}" class="form-select" id="sexo" required>
+                <option value="" disabled>Seleccione...</option>
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+            </select>
+            <div class="text-danger small" th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}"></div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a th:href="@{/estudiante/listar}" class="btn btn-outline-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
